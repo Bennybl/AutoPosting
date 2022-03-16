@@ -34,15 +34,15 @@ namespace AutoPosting
         //Sets google credentials to open GoogleAPI service. 
         private void setCredentials()
         {
-            using (var stream =
-                new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
+            using (StreamReader stream =
+                new StreamReader($"{Directory.GetCurrentDirectory()}/credentials.json"))
             {
-                m_Credential = GoogleCredential.FromStream(stream)
+                string str = stream.ReadToEnd();
+                    m_Credential = GoogleCredential.FromJson(str)
                     .CreateScoped(m_Scopes);
             }
 
         }
-
         //Sets a servise conection to GoogleAPI.
         private void setService()
         {
