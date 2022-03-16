@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "AutoPosting": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

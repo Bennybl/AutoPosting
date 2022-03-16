@@ -85,5 +85,17 @@ namespace AutoPosting
             var b = m_Service.Spreadsheets.BatchUpdate(re, m_SpreadsheetId).Execute();
             
         }
+
+        public void UpdateCell(string i_Range, List<Object> i_ObjList)
+        {
+            
+            ValueRange valueRange = new ValueRange();
+            valueRange.Values = new List<IList<Object>>() { i_ObjList };
+
+            var updateReq = m_Service.Spreadsheets.Values.Update(valueRange, m_SpreadsheetId, i_Range);
+            updateReq.ValueInputOption = SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.USERENTERED;
+            updateReq.Execute();
+
+        }
     }
 }

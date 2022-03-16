@@ -30,6 +30,7 @@ namespace AutoPosting
             m_FacebookAccessToken = m_Sheet.Values[1][2].ToString();
             m_PageId = m_Sheet.Values[1][3].ToString();
             m_FacebookApi = new FacebookApi(m_PageId, m_FacebookAccessToken);
+            
             setConfessionObj();
             postToFacebook();
         }
@@ -56,14 +57,34 @@ namespace AutoPosting
             }
             if (m_ConfessionPost.IsPosted)
             {
-                m_Sheet.Values[1][1] = Int32.Parse(m_Sheet.Values[1][1].ToString()) + 1;
+                
                 m_SheetAPI.deleteRow();
+                m_SheetAPI.UpdateCell("sheet2!B2", new List<object>() { Int32.Parse(m_Sheet.Values[1][1].ToString()) + 1 });
             }
-            
+            updateConfToDataBase();
+
         }
 
         private void updateConfToDataBase()
         {
+            string exeptionMessage = "";
+            if(m_ConfessionPost.exceptionInPosting != null)
+            {
+                exeptionMessage = m_ConfessionPost.exceptionInPosting.Message;
+            }
+
+            var range = $"sheet4!{m_Sheet.Values[0][3].ToString()}:{m_Sheet.Values[0][3].ToString()}";
+            List<Object> objList = new List<object>()
+            {
+                m_ConfessionPost.DateCreated,
+                m_ConfessionPost.PostNumber,
+                m_ConfessionPost.Post,
+                m_ConfessionPost.IsPosted,
+                exeptionMessage
+
+            };
+            m_SheetAPI.UpdateCell("sheet4!2:2", objList);
+            m_SheetAPI.UpdateCell("sheet2!D1", new List<object>() { Int32.Parse(m_Sheet.Values[0][3].ToString()) + 1 });
             //ToDo
         }
     }
